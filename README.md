@@ -243,3 +243,5 @@ See [schema](graphql/schema.graphql), [SQL](database/schema.sql),
 [AI critique](docs/ai-architecture-critique.md) and [handoff](docs/HANDOFF.md).
 Preserve complete original AI transcripts separately; these documents do not
 replace them.
+
+> **Final assessment documentation is in** `docs/final-doc` folder

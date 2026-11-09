@@ -13,6 +13,7 @@ export function Filters({
     applied: TaskFilter;
     onApply: (filter: TaskFilter) => void;
 }) {
+    // Keep edits local until Apply, avoiding a request for every input change.
     const [draft, setDraft] = useState({
         statusId: applied.statusId ?? '',
         assignee: applied.unassigned ? 'unassigned' : (applied.assigneeId ?? ''),

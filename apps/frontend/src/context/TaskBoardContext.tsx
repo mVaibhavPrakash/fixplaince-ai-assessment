@@ -29,6 +29,7 @@ function useBoardState(api: BoardApi) {
     const pages = useRef(new Map<string, AbortController>());
     const key = JSON.stringify([workspaceKey, projectId, filter]);
 
+    // Hide the previous selection immediately, before effect cleanup and the next fetch.
     const board: BoardState =
         boardState.key === key
             ? boardState
@@ -83,6 +84,7 @@ function useBoardState(api: BoardApi) {
 
     async function loadMore(statusId: string) {
         const column = board.columns[statusId];
+        // Page requests share a summary; serialize them so older responses cannot replace it.
         if (!column?.hasNextPage || !column.endCursor || pages.current.size) {
             return;
         }
@@ -135,6 +137,7 @@ function useBoardState(api: BoardApi) {
                 );
             }
         } finally {
+            // An old request must not remove a newer request's cancellation handle.
             if (pages.current.get(statusId) === controller) {
                 pages.current.delete(statusId);
             }

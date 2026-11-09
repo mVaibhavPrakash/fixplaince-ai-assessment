@@ -43,6 +43,7 @@ function ExposeContexts({ children }: { children: ReactNode }) {
 }
 
 function ProjectScope({ api, children }: { api: BoardApi; children: ReactNode }) {
+    // Changing projects remounts board state, clearing filters, cursors and pending work.
     const { projectId } = useWorkspace();
     return (
         <TaskBoardProvider key={projectId} api={api}>
@@ -52,6 +53,7 @@ function ProjectScope({ api, children }: { api: BoardApi; children: ReactNode })
 }
 
 function WorkspaceScope({ api, children }: { api: BoardApi; children: ReactNode }) {
+    // Remount the workspace subtree when identity changes to discard the previous tenant's state.
     const { identity } = useOrganization();
     return (
         <WorkspaceProvider key={JSON.stringify(identity)} api={api}>

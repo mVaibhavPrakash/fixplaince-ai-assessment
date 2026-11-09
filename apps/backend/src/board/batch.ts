@@ -15,6 +15,7 @@ export function createBatchLoader<K, V>(
         const promise = new Promise<V>((resolve, reject) => {
             queue.push({ key, resolve, reject });
             if (queue.length === 1) {
+                // Collect sibling resolver loads before issuing one batch.
                 queueMicrotask(async () => {
                     const current = queue;
                     queue = [];
@@ -23,6 +24,7 @@ export function createBatchLoader<K, V>(
                         if (values.length !== current.length) {
                             throw Error('Invalid batch result');
                         }
+                        // Batch results must follow the input key order, including missing records.
                         current.forEach((entry, index) => entry.resolve(values[index]));
                     } catch (error) {
                         current.forEach((entry) => entry.reject(error));

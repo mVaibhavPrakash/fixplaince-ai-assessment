@@ -60,6 +60,7 @@ export function normalizeFilter(input?: TaskFilter | null): TaskFilter {
     return filter;
 }
 export function cursorScope(...parts: unknown[]): string {
+    // Prevent cursor reuse with another tenant, filter or relation; this is not authorization.
     return createHash('sha256').update(JSON.stringify(parts)).digest('hex');
 }
 export function encodeCursor(cursor: Cursor): string {

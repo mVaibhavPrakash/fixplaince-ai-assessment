@@ -65,6 +65,7 @@ export class BoardService {
         );
     }
     #once<T>(key: string, work: () => Promise<T>): Promise<T> {
+        // Cache the promise so identical aliases share in-flight work within this request.
         if (!this.#memo.has(key)) {
             this.#memo.set(key, work());
         }
@@ -97,6 +98,7 @@ export class BoardService {
         }
     }
     #connection(rows: Row[], first: number, scope: string) {
+        // The gateway fetches one extra row to detect another page without a COUNT query.
         const edges = rows.slice(0, first).map((node) => ({
             node,
             cursor: encodeCursor({
@@ -164,6 +166,7 @@ export class BoardService {
             return {
                 total: count('total'),
                 overdue: Number(rows.find((row) => row.dimension === 'total')?.overdue ?? 0),
+                // Include empty statuses and priorities so filters do not change chart categories.
                 byStatus: statuses.map((status) => ({ status, count: count('status', status.id) })),
                 byPriority: PRIORITIES.map((priority) => ({
                     priority,

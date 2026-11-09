@@ -95,6 +95,7 @@ export function createApi(
             ).organization;
         },
         async board({ identity, projectId, filter, statusIds }, signal): Promise<BoardData> {
+            // Fetch all initial column pages and the summary in one server snapshot.
             const variables: Record<string, unknown> = {
                 projectId,
                 filter,

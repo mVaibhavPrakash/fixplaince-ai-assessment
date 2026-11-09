@@ -20,6 +20,7 @@ export function mergePage(
 
     for (const { node } of connection.edges) {
         const previous = latest.get(node.id);
+        // A live page can repeat a task; never overwrite a newer version already displayed.
         if (!previous || node.version >= previous.version) {
             latest.set(node.id, node);
         }
@@ -37,6 +38,7 @@ export function mergePage(
                     ...(id === statusId ? connection.pageInfo : {}),
                     tasks: [...ids]
                         .map((key) => latest.get(key)!)
+                        // Remove cards whose newer version places them in a different column.
                         .filter((task) => task.status.id === id),
                     loading: false,
                     error: null,

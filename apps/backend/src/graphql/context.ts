@@ -64,6 +64,7 @@ export async function createRequestContext(
         if (!(ROLES as readonly unknown[]).includes(identity.role)) {
             throw forbidden();
         }
+        // Set RLS scope only after validation; transaction-local state cannot leak through the pool.
         await query("SELECT set_config('app.organization_id', $org, true)", {
             org: organizationId,
         });

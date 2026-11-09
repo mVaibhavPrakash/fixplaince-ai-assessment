@@ -18,6 +18,7 @@ export interface QueryPort {
     ): Promise<unknown>;
 }
 
+// Keep PostgreSQL microseconds: JS Date would truncate cursor boundaries to milliseconds.
 const timestamps = (alias: string) =>
     `to_char(${alias}.created_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS created_at`;
 
@@ -42,6 +43,7 @@ export class TenantGateway implements BoardGateway {
             return (await this.database.query(sql, {
                 transaction: this.transaction,
                 type: QueryTypes.SELECT,
+                // Caller binds cannot replace the validated tenant scope.
                 bind: { ...bind, org: this.organizationId },
             })) as Row[];
         } catch {
@@ -147,6 +149,7 @@ export class TenantGateway implements BoardGateway {
     }
     summary(projectId: string, filter: TaskFilter) {
         const { where, bind } = this.#filter(projectId, filter);
+        // Every summary dimension uses the same filters and the organization's local date.
         return this.#select(
             `WITH matching AS MATERIALIZED (
             SELECT t.*, s.is_done, (transaction_timestamp() AT TIME ZONE o.time_zone)::date AS today
@@ -164,6 +167,7 @@ export class TenantGateway implements BoardGateway {
     async history(relation: Relation, requests: HistoryRequest[]): Promise<Row[][]> {
         const table = relation === 'comments' ? 'task_comments' : 'task_activity';
 
+        // LATERAL applies each task's cursor and limit separately in one batched query.
         const rows = await this.#select(
             `SELECT request.ordinal, child.* FROM
           jsonb_to_recordset($requests::jsonb) AS request(ordinal int, task_id uuid, page_size int, after_time timestamptz, after_id uuid)
