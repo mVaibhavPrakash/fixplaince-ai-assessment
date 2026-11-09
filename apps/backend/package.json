@@ -1,0 +1,33 @@
+{
+    "name": "@taskboard/backend",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "engines": {
+        "node": ">=22"
+    },
+    "scripts": {
+        "dev": "node --watch --import tsx src/index.ts",
+        "start": "node dist/index.js",
+        "build": "vite build",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "test:coverage": "vitest run --coverage",
+        "typecheck": "tsc --noEmit",
+        "db:setup": "tsx src/manage.ts"
+    },
+    "dependencies": {
+        "@apollo/server": "^5.0.0",
+        "graphql": "^16.11.0",
+        "pg": "^8.16.3",
+        "sequelize": "^6.37.8"
+    },
+    "devDependencies": {
+        "@types/node": "^22.15.0",
+        "@types/pg": "^8.15.0",
+        "@vitest/coverage-v8": "^3.2.4",
+        "tsx": "^4.20.3",
+        "vite": "^6.3.5",
+        "vitest": "^3.2.4"
+    }
+}

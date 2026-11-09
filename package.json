@@ -1,0 +1,40 @@
+{
+    "name": "taskboard",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "engines": {
+        "node": ">=22"
+    },
+    "workspaces": [
+        "apps/backend",
+        "apps/frontend"
+    ],
+    "scripts": {
+        "dev": "concurrently -k -n backend,frontend \"npm run dev -w @taskboard/backend\" \"npm run dev -w @taskboard/frontend\"",
+        "build": "npm run build --workspaces",
+        "test": "npm run test --workspaces",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "validate": "npm run format && npm run lint:fix",
+        "format": "prettier --write \"./**/*.{js,jsx,ts,tsx,json,css,md}\"",
+        "format:check": "prettier --check \"./**/*.{js,jsx,ts,tsx,json,css,md}\"",
+        "test:watch": "concurrently -n backend,frontend \"npm run test:watch -w @taskboard/backend\" \"npm run test:watch -w @taskboard/frontend\"",
+        "test:coverage": "npm run test:coverage --workspaces",
+        "typecheck": "npm run typecheck --workspaces",
+        "check": "npm run lint && npm run typecheck && npm run test && npm run build",
+        "setup": "npm run db:setup -w @taskboard/backend",
+        "start": "npm run start -w @taskboard/backend",
+        "verify": "npm run check"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.14.0",
+        "concurrently": "^9.2.1",
+        "eslint": "^9.14.0",
+        "eslint-config-prettier": "^9.1.0",
+        "globals": "^17.14.0",
+        "prettier": "^3.3.3",
+        "typescript": "^5.9.3",
+        "typescript-eslint": "^8.72.1"
+    }
+}

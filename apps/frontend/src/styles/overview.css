@@ -1,0 +1,101 @@
+.metrics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+.metric {
+    border: 1px solid #ddd;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.metric strong {
+    font-size: 26px;
+    font-weight: 600;
+}
+.metric-note {
+    color: #646b70;
+    font-size: 12px;
+}
+.overdue-number {
+    color: #9d3b2b;
+}
+.insights {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 12px;
+    margin-top: 12px;
+}
+.status-chart,
+.priority-summary {
+    border: 1px solid #ddd;
+    padding: 16px;
+}
+.status-chart figcaption {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+.chart-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.chart-row {
+    display: grid;
+    grid-template-columns: minmax(70px, 120px) 1fr 30px;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+}
+.chart-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.chart-track {
+    height: 8px;
+    background: #eee;
+}
+.chart-bar {
+    display: block;
+    height: 100%;
+    background: #7e94a7;
+}
+.chart-row strong {
+    text-align: right;
+}
+.priority-summary h2 {
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+.priority-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+.priority-grid > div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.priority-grid strong {
+    font-size: 20px;
+    font-weight: 600;
+}
+.priority-label {
+    font-size: 12px;
+}
+@media (max-width: 760px) {
+    .insights {
+        grid-template-columns: 1fr;
+    }
+}
+@media (max-width: 450px) {
+    .metrics {
+        grid-template-columns: 1fr;
+    }
+}

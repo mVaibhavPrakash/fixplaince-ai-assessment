@@ -1,0 +1,124 @@
+.main-shell {
+    max-width: 1400px;
+    margin: auto;
+}
+.topbar {
+    border-bottom: 1px solid #ddd;
+    padding: 16px 24px;
+}
+.identity-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+.identity-controls select {
+    min-width: 200px;
+}
+main {
+    padding: 24px;
+}
+.page-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+.page-heading h1 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.page-heading p {
+    color: #646b70;
+    margin-top: 6px;
+}
+.read-only {
+    font-size: 12px;
+    font-weight: normal;
+    color: #646b70;
+}
+.project-row {
+    display: flex;
+    align-items: end;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+.project-row label {
+    min-width: 200px;
+}
+.project-row .subtle {
+    padding-bottom: 8px;
+}
+.state-panel {
+    border: 1px solid #ddd;
+    padding: 40px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+}
+.state-panel p {
+    color: #646b70;
+}
+.state-error {
+    border-color: #c78e8e;
+}
+.board-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin: 24px 0 12px;
+}
+.board-heading > div {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+}
+.board-heading span {
+    color: #646b70;
+    font-size: 12px;
+}
+.page-footer {
+    margin-top: 24px;
+    padding-top: 12px;
+    border-top: 1px solid #ddd;
+    color: #646b70;
+    font-size: 12px;
+}
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 16px;
+    padding: 8px;
+    background: white;
+}
+.skip-link:focus {
+    top: 8px;
+}
+@media (max-width: 600px) {
+    main,
+    .topbar {
+        padding: 16px;
+    }
+    .identity-controls label {
+        flex: 1;
+        min-width: 140px;
+    }
+    .identity-controls select {
+        min-width: 0;
+    }
+    .page-heading h1 {
+        flex-wrap: wrap;
+    }
+    .project-row label {
+        min-width: 0;
+        flex: 1;
+    }
+    .board-heading > div {
+        flex-direction: column;
+        gap: 4px;
+    }
+}

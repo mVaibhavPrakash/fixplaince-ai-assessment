@@ -1,0 +1,196 @@
+# Assessment identity is supplied through headers; authentication is not implemented.
+# Production must establish identity with a securely validated JWT, then still
+# validate active organization membership, role and tenant scope in PostgreSQL.
+
+"""
+UTC timestamp serialized as an ISO 8601 string.
+"""
+scalar DateTime
+"""
+Calendar date in YYYY-MM-DD format.
+"""
+scalar Date
+"""
+JSON object for workspace preferences and activity values.
+"""
+scalar JSON
+
+enum OrganizationRole {
+    OWNER
+    ADMIN
+    MEMBER
+    VIEWER
+}
+enum TaskPriority {
+    LOW
+    MEDIUM
+    HIGH
+    URGENT
+}
+enum ActivityAction {
+    CREATED
+    UPDATED
+    COMMENTED
+}
+
+type User {
+    id: ID!
+    displayName: String!
+    isActive: Boolean!
+}
+type OrganizationSettings {
+    timeZone: String!
+    preferences: JSON!
+}
+type Organization {
+    id: ID!
+    name: String!
+    settings: OrganizationSettings!
+    members: [OrganizationMember!]!
+    projects: [Project!]!
+}
+type OrganizationMember {
+    user: User!
+    role: OrganizationRole!
+    isActive: Boolean!
+}
+type Project {
+    id: ID!
+    organizationId: ID!
+    name: String!
+    description: String
+    statuses: [TaskStatus!]!
+    labels: [Label!]!
+}
+type TaskStatus {
+    id: ID!
+    name: String!
+    """
+    Opaque fractional string rank; ordered using ASCII byte order, not numeric or locale order.
+    """
+    position: String!
+    isDone: Boolean!
+}
+type Label {
+    id: ID!
+    name: String!
+}
+type Task {
+    id: ID!
+    organizationId: ID!
+    projectId: ID!
+    title: String!
+    description: String
+    """
+    Membership state is organization-specific; user.isActive is global state.
+    """
+    assignee: OrganizationMember
+    priority: TaskPriority!
+    status: TaskStatus!
+    """
+    Lexicographic fractional rank within the task's status column; ASCII byte order.
+    """
+    position: String!
+    labels: [Label!]!
+    dueDate: Date
+    createdBy: User!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+    """
+    Starts at 1; future task updates must atomically check and increment this revision.
+    """
+    version: Int!
+    """
+    Ascending (createdAt, id); first must be 1–100, default 25.
+    """
+    comments(first: Int! = 25, after: String): TaskCommentConnection!
+    """
+    Ascending (createdAt, id); cursor is scoped to tenant, task and relation.
+    """
+    activity(first: Int! = 25, after: String): TaskActivityConnection!
+}
+type TaskComment {
+    id: ID!
+    author: User!
+    body: String!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+}
+type TaskActivity {
+    id: ID!
+    actor: User!
+    action: ActivityAction!
+    """
+    One logical event; changed fields map to objects containing old and new values.
+    """
+    changes: JSON!
+    createdAt: DateTime!
+}
+input TaskFilter {
+    statusId: ID
+    assigneeId: ID
+    unassigned: Boolean
+    priority: TaskPriority
+    dueDateFrom: Date
+    dueDateTo: Date
+}
+type TaskEdge {
+    cursor: String!
+    node: Task!
+}
+type PageInfo {
+    endCursor: String
+    hasNextPage: Boolean!
+}
+type TaskConnection {
+    edges: [TaskEdge!]!
+    pageInfo: PageInfo!
+}
+type TaskCommentEdge {
+    cursor: String!
+    node: TaskComment!
+}
+type TaskCommentConnection {
+    edges: [TaskCommentEdge!]!
+    pageInfo: PageInfo!
+}
+type TaskActivityEdge {
+    cursor: String!
+    node: TaskActivity!
+}
+type TaskActivityConnection {
+    edges: [TaskActivityEdge!]!
+    pageInfo: PageInfo!
+}
+type StatusCount {
+    status: TaskStatus!
+    count: Int!
+}
+type AssigneeCount {
+    assignee: OrganizationMember
+    count: Int!
+}
+type PriorityCount {
+    priority: TaskPriority!
+    count: Int!
+}
+type TaskSummary {
+    total: Int!
+    overdue: Int!
+    byStatus: [StatusCount!]!
+    byAssignee: [AssigneeCount!]!
+    byPriority: [PriorityCount!]!
+}
+type Query {
+    """
+    Local organization/member selectors. Settings, projects and roles require the selected tenant's validated membership.
+    """
+    organizations: [Organization!]!
+    """
+    Selected organization requires validated active membership, even with mock identity.
+    """
+    organization: Organization!
+    task(id: ID!): Task
+    tasks(projectId: ID!, filter: TaskFilter, first: Int! = 25, after: String): TaskConnection!
+    taskSummary(projectId: ID!, filter: TaskFilter): TaskSummary!
+}

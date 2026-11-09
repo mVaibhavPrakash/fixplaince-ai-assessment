@@ -1,0 +1,88 @@
+:root {
+    font-family: system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #242424;
+    background: white;
+}
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+}
+h1,
+h2,
+h3,
+p,
+figure {
+    margin: 0;
+}
+h1 {
+    font-size: 24px;
+}
+h2 {
+    font-size: 17px;
+}
+h3 {
+    font-size: 14px;
+}
+button,
+input,
+select {
+    font: inherit;
+}
+button {
+    cursor: pointer;
+    border: 1px solid #bfc5ca;
+    border-radius: 4px;
+    background: #f5f6f7;
+    color: #242424;
+    padding: 7px 12px;
+    min-height: 36px;
+}
+button:hover {
+    background: #e9ecef;
+}
+button:disabled {
+    opacity: 0.55;
+    cursor: default;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+    outline: 2px solid #466888;
+    outline-offset: 2px;
+}
+label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+input,
+select {
+    border: 1px solid #bfc5ca;
+    border-radius: 4px;
+    padding: 7px 9px;
+    min-height: 36px;
+    background: white;
+    color: #242424;
+    max-width: 100%;
+}
+.button.primary {
+    background: #e8edf2;
+    border-color: #aebbc8;
+}
+.text-button {
+    border: 0;
+    background: none;
+    text-decoration: underline;
+}
+.subtle {
+    color: #646b70;
+    font-size: 12px;
+}
