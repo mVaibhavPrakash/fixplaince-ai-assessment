@@ -1,7 +1,7 @@
 ﻿# RFC: Keeping the Task Board Fast as Usage Grows
 
 **Status:** Draft for engineering and product review  
-**Date:** 2026-11-09  
+**Date:** 2026-11-16  
 **Audience:** Engineering team and product manager
 
 ## Why we need this
